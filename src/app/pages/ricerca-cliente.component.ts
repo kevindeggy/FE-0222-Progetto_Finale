@@ -6,7 +6,6 @@ import { ClientiService } from '../service/clienti.service';
 @Component({
   template: `
     <form *ngIf="!loading" nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
-
       <nz-form-item>
         <nz-form-label class="label" [nzSm]="6" [nzXs]="24" nzRequired nzFor="sort">Scegli cosa ricercare</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Inserire il campo!">
@@ -20,7 +19,7 @@ import { ClientiService } from '../service/clienti.service';
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="contenuto">Contenuto ricerca</nz-form-label>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="contenuto">Contenuto ricerca (case sensitive)</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Inserire un nome valido!">
           <input nz-input type="text" formControlName="contenuto" id="contenuto" />
         </nz-form-control>
@@ -31,63 +30,58 @@ import { ClientiService } from '../service/clienti.service';
           <button nz-button nzType="primary">Cerca</button>
         </nz-form-control>
       </nz-form-item>
-
     </form>
 
     <nz-spin class="titleCard" *ngIf="loadingRicerca" nzSimple [nzSize]="'large'"></nz-spin>
     <nz-empty *ngIf="!loading && clienteRes.length === 0 && !loadingRicerca">Nessun Risultato</nz-empty>
 
     <div *ngIf="!loading && clienteRes.length > 0">
-    <div *ngFor="let cliente of clienteRes" class="cliente">
-    <nz-card style="width:270px;" *ngIf="cliente.nomeContatto && cliente.cognomeContatto && cliente.partitaIva" [nzCover]="coverTemplate" [nzLoading]="loading">
-      <nz-card-meta
-        nzTitle="{{cliente.nomeContatto}} {{cliente.cognomeContatto}}"
-        nzDescription="partita IVA: {{cliente.partitaIva}}"
-      ></nz-card-meta>
-    </nz-card>
-    <ng-template #coverTemplate>
-      <img alt="example" src="https://iconarchive.com/download/i104802/papirus-team/papirus-status/avatar-default.ico" />
-    </ng-template>
+      <div *ngFor="let cliente of clienteRes" class="cliente">
+        <nz-card style="width:270px;" *ngIf="cliente.nomeContatto && cliente.cognomeContatto && cliente.partitaIva" [nzCover]="coverTemplate" [nzLoading]="loading">
+          <nz-card-meta nzTitle="{{ cliente.nomeContatto }} {{ cliente.cognomeContatto }}" nzDescription="partita IVA: {{ cliente.partitaIva }}"></nz-card-meta>
+        </nz-card>
+        <ng-template #coverTemplate>
+          <img alt="example" src="https://iconarchive.com/download/i104802/papirus-team/papirus-status/avatar-default.ico" />
+        </ng-template>
 
-    <div *ngIf="cliente.id && cliente.tipoCliente && cliente.ragioneSociale && cliente.telefono && cliente.pec">
-    <nz-descriptions
-      nzTitle="Descrizione Cliente"
-      nzBordered
-      [nzColumn]="{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }"
-    >
-      <nz-descriptions-item nzTitle="ID Cliente">Tipo Cliente </nz-descriptions-item>
-      <nz-descriptions-item nzTitle="Ragione Sociale">Telefono</nz-descriptions-item>
-      <nz-descriptions-item nzTitle="Pec">Data Inserimento</nz-descriptions-item>
-      <nz-descriptions-item nzTitle="{{cliente.id}}">{{cliente.tipoCliente}}</nz-descriptions-item>
-      <nz-descriptions-item nzTitle="{{cliente.ragioneSociale}}">{{cliente.telefono}}</nz-descriptions-item>
-      <nz-descriptions-item nzTitle="{{cliente.pec}}">{{cliente.dataInserimento}}</nz-descriptions-item>
-      <nz-descriptions-item nzTitle="Cliente Info" *ngIf="cliente.indirizzoSedeOperativa">
-        Indirizzo Sede Legale:
-        <br />
-        <br />
-        {{cliente.indirizzoSedeLegale.via}}, {{cliente.indirizzoSedeLegale.civico}}
-        <br />
-        CAP: {{cliente.indirizzoSedeLegale.cap}}, {{cliente.indirizzoSedeLegale.localita}}
-        <br />
-        Comune: {{cliente.indirizzoSedeLegale.comune.nome}}, Provincia: {{cliente.indirizzoSedeLegale.comune.provincia.nome}} ({{cliente.indirizzoSedeLegale.comune.provincia.sigla}})
-
-      </nz-descriptions-item>
-    </nz-descriptions>
-    </div>
-    </div>
+        <div *ngIf="cliente.id && cliente.tipoCliente && cliente.ragioneSociale && cliente.telefono && cliente.pec">
+          <nz-descriptions nzTitle="Descrizione Cliente" nzBordered [nzColumn]="{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }">
+            <nz-descriptions-item nzTitle="ID Cliente">Tipo Cliente </nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Ragione Sociale">Telefono</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Pec">Data Inserimento</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="{{ cliente.id }}">{{ cliente.tipoCliente }}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="{{ cliente.ragioneSociale }}">{{ cliente.telefono }}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="{{ cliente.pec }}">{{ cliente.dataInserimento }}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Cliente Info" *ngIf="cliente.indirizzoSedeOperativa">
+              Indirizzo Sede Legale:
+              <br />
+              <br />
+              {{ cliente.indirizzoSedeLegale.via }}, {{ cliente.indirizzoSedeLegale.civico }}
+              <br />
+              CAP: {{ cliente.indirizzoSedeLegale.cap }}, {{ cliente.indirizzoSedeLegale.localita }}
+              <br />
+              Comune: {{ cliente.indirizzoSedeLegale.comune.nome }}, Provincia: {{ cliente.indirizzoSedeLegale.comune.provincia.nome }} ({{ cliente.indirizzoSedeLegale.comune.provincia.sigla }})
+            </nz-descriptions-item>
+          </nz-descriptions>
+        </div>
+      </div>
     </div>
   `,
-  styles: [` .cliente {
-    display: flex;
-    gap: 2em;
-    margin: 50px 0;
-  }
-  .titleCard {
-      font-size: 4em;
-      text-align: center;
-      margin: auto 0;
-      text-shadow: 2px 2px 2px #007FFF;
-    }`],
+  styles: [
+    `
+      .cliente {
+        display: flex;
+        gap: 2em;
+        margin: 50px 0;
+      }
+      .titleCard {
+        font-size: 4em;
+        text-align: center;
+        margin: auto 0;
+        text-shadow: 2px 2px 2px #007fff;
+      }
+    `,
+  ],
 })
 export class RicercaClienteComponent implements OnInit {
   loading: boolean = false;
@@ -98,10 +92,10 @@ export class RicercaClienteComponent implements OnInit {
       {
         key: "email",
         value: "miamail@gmail.com",
-        operation: "EQUAL"
-      }
-    ]
-  }
+        operation: "EQUAL",
+      },
+    ],
+  };
   clienteRes: Cliente[] = [];
 
   constructor(private fb: FormBuilder, private srvClienti: ClientiService) { }
@@ -112,16 +106,16 @@ export class RicercaClienteComponent implements OnInit {
     this.ricerca.conditionList[0].value = this.validateForm.value.contenuto;
 
     this.srvClienti.findCliente(this.ricerca).subscribe((res) => {
-      this.clienteRes = res.content
+      this.clienteRes = res.content;
 
       this.loadingRicerca = false;
-    })
+    });
   }
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
-      sort: ['', Validators.required],
-      contenuto: ['', Validators.required]
+      sort: ["", Validators.required],
+      contenuto: ["", Validators.required],
     });
   }
 }

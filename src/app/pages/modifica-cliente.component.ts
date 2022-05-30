@@ -1,19 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import { Cliente } from '../models/cliente';
 import { ClientiService } from '../service/clienti.service';
 import { ComProvService } from '../service/com-prov.service';
 
 @Component({
   template: `
-   <form *ngIf="!loading" nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
-      <h3>Inserimento Nuovo Cliente:</h3>
+    <form *ngIf="!loading" nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+      <h3>Modifica Cliente:</h3>
 
       <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="id">ID Cliente</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Inserire un numero valido!">
-          <input nz-input type="number" formControlName="id" id="id" readonly/>
+          <input nz-input type="number" formControlName="id" id="id" readonly />
         </nz-form-control>
       </nz-form-item>
 
@@ -25,16 +26,16 @@ import { ComProvService } from '../service/com-prov.service';
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="partitaIVA" nzTooltipTitle="Inserisci almeno 5 numeri" >Partita IVA</nz-form-label>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="partitaIVA" nzTooltipTitle="Inserisci almeno 5 numeri">Partita IVA</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Inserire una partita IVA valida!">
           <input nz-input pattern="^[0-9]+" minlength="3" formControlName="partitaIVA" id="partitaIVA" />
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="tipoCliente" >Tipo Cliente</nz-form-label>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="tipoCliente">Tipo Cliente</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Inserire un tipo cliente!">
-        <nz-select class="choise.select" id="tipoCliente" formControlName="tipoCliente">
+          <nz-select class="choise.select" id="tipoCliente" formControlName="tipoCliente">
             <nz-option nzValue="SRL" nzLabel="SRL"></nz-option>
             <nz-option nzValue="SPA" nzLabel="SPA"></nz-option>
             <nz-option nzValue="SAS" nzLabel="SAS"></nz-option>
@@ -58,7 +59,7 @@ import { ComProvService } from '../service/com-prov.service';
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="numeroTel" nzTooltipTitle="Inserisci almeno 8 numeri" >Telefono</nz-form-label>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="numeroTel" nzTooltipTitle="Inserisci almeno 8 numeri">Telefono</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Inserire un numero di telefono valido!">
           <input nz-input pattern="^[0-9]+" minlength="8" formControlName="numeroTel" id="numeroTel" />
         </nz-form-control>
@@ -79,7 +80,7 @@ import { ComProvService } from '../service/com-prov.service';
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="numeroTelContatto" nzTooltipTitle="Inserisci almeno 8 numeri" >Telefono Contatto</nz-form-label>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="numeroTelContatto" nzTooltipTitle="Inserisci almeno 8 numeri">Telefono Contatto</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Inserire un numero di telefono valido!">
           <input nz-input pattern="^[0-9]+" minlength="8" formControlName="numeroTelContatto" id="numeroTelContatto" />
         </nz-form-control>
@@ -92,7 +93,7 @@ import { ComProvService } from '../service/com-prov.service';
         </nz-form-control>
       </nz-form-item>
 
-        <p>Indirizzo Sede Operativa</p>
+      <p>Indirizzo Sede Operativa</p>
 
       <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="viaSedeOper">Via</nz-form-label>
@@ -123,9 +124,9 @@ import { ComProvService } from '../service/com-prov.service';
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="comuneNomeSedeOper" >Comune</nz-form-label>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="comuneNomeSedeOper">Comune</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Inserire il nome del Comune!">
-        <nz-select class="choise.select" id="comuneNomeSedeOper" formControlName="comuneNomeSedeOper">
+          <nz-select class="choise.select" id="comuneNomeSedeOper" formControlName="comuneNomeSedeOper">
             <nz-option *ngFor="let item of comuniDisp" [nzValue]="item.id" [nzLabel]="item.nome"></nz-option>
           </nz-select>
         </nz-form-control>
@@ -162,10 +163,10 @@ import { ComProvService } from '../service/com-prov.service';
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="comuneNomeSedeLegale" >Comune</nz-form-label>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="comuneNomeSedeLegale">Comune</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Inserire il nome del Comune!">
-        <nz-select class="choise.select" id="comuneNomeSedeLegale" formControlName="comuneNomeSedeLegale">
-          <nz-option *ngFor="let item of comuniDisp" [nzValue]="item.id" [nzLabel]="item.nome"></nz-option>
+          <nz-select class="choise.select" id="comuneNomeSedeLegale" formControlName="comuneNomeSedeLegale">
+            <nz-option *ngFor="let item of comuniDisp" [nzValue]="item.id" [nzLabel]="item.nome"></nz-option>
           </nz-select>
         </nz-form-control>
       </nz-form-item>
@@ -175,7 +176,7 @@ import { ComProvService } from '../service/com-prov.service';
           <span>Data inserimento Cliente</span>
         </nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Data non valida!">
-          <input nz-input id="dataIns" formControlName="dataIns" readonly/>
+          <input nz-input id="dataIns" formControlName="dataIns" readonly />
         </nz-form-control>
       </nz-form-item>
 
@@ -184,7 +185,7 @@ import { ComProvService } from '../service/com-prov.service';
           <span>Data inserimento Cliente</span>
         </nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Data non valida!">
-          <input nz-input id="dataUlt" formControlName="dataUlt" readonly/>
+          <input nz-input id="dataUlt" formControlName="dataUlt" readonly />
         </nz-form-control>
       </nz-form-item>
 
@@ -192,14 +193,12 @@ import { ComProvService } from '../service/com-prov.service';
 
       <nz-form-item nz-row class="register-area">
         <nz-form-control [nzSpan]="14" [nzOffset]="6">
-          <button [disabled]="validateForm.invalid"] nz-button nzType="primary">Salva Modifiche CLiente</button>
+          <button [disabled]="validateForm.invalid" nz-button nzType="primary">Salva Modifiche CLiente</button>
         </nz-form-control>
       </nz-form-item>
-
     </form>
   `,
-  styles: [
-  ]
+  styles: [],
 })
 export class ModificaClienteComponent implements OnInit {
   clienteSelectedID!: number;
@@ -208,9 +207,19 @@ export class ModificaClienteComponent implements OnInit {
   validateForm!: FormGroup;
   comuniDisp!: any;
 
-  constructor(private router: ActivatedRoute, private srvClienti: ClientiService, private fb: FormBuilder, private srvComuni: ComProvService) { }
+  constructor(private router: ActivatedRoute, private srvClienti: ClientiService, private fb: FormBuilder, private srvComuni: ComProvService, private modal: NzModalService) { }
 
   submitForm(): void {
+    this.modal.warning({
+      nzTitle: "Sei sicuro di modificare questo Cliente?",
+      nzContent: "Tale processo è immediato, e puoi sempre modificarlo!",
+      nzCancelText: "Annulla",
+      nzOnCancel: () => this.errorTask(),
+      nzOnOk: () => this.modificaAccettata(),
+    });
+  }
+
+  modificaAccettata() {
     this.cliente.ragioneSociale = this.validateForm.value.ragioneSociale;
     this.cliente.partitaIva = this.validateForm.value.partitaIVA;
     this.cliente.tipoCliente = this.validateForm.value.tipoCliente;
@@ -232,15 +241,32 @@ export class ModificaClienteComponent implements OnInit {
     this.cliente.indirizzoSedeLegale.localita = this.validateForm.value.localitaSedeLegale;
     this.cliente.indirizzoSedeLegale.comune.id = this.validateForm.value.comuneNomeSedeLegale;
 
-    this.srvClienti.updateCliente(this.cliente).subscribe(() => {
-      alert("Cliente modificato!")
-    })
+    this.srvClienti.updateCliente(this.cliente).subscribe(
+      () => {
+        this.successTask();
+      },
+      (error) => this.errorTask()
+    );
+  }
+
+  successTask(): void {
+    this.modal.success({
+      nzTitle: "Comando eseguito correttamente",
+      nzContent: "Cliente modificato con successo!",
+    });
+  }
+
+  errorTask(): void {
+    this.modal.error({
+      nzTitle: "Comando non eseguito",
+      nzContent: "Annullo operazione!",
+    });
   }
 
   ngOnInit(): void {
     this.srvComuni.getComuni(0).subscribe((res) => {
       this.comuniDisp = res.content;
-    })
+    });
 
     this.loading = true;
     this.clienteSelectedID = this.router.snapshot.params["id"];
@@ -271,8 +297,8 @@ export class ModificaClienteComponent implements OnInit {
           localitaSedeLegale: [this.cliente.indirizzoSedeLegale.localita!, Validators.required],
           comuneNomeSedeLegale: [this.cliente.indirizzoSedeLegale.comune.id!, Validators.required],
           dataIns: [this.cliente.dataInserimento, Validators.required],
-          dataUlt: [this.cliente.dataUltimoContatto, Validators.required]
-        })
+          dataUlt: [this.cliente.dataUltimoContatto, Validators.required],
+        });
       } else if (!res.indirizzoSedeLegale && res.indirizzoSedeOperativa) {
         this.validateForm = this.fb.group({
           id: [this.cliente.id, Validators.required],
@@ -291,14 +317,14 @@ export class ModificaClienteComponent implements OnInit {
           capSedeOper: [this.cliente.indirizzoSedeOperativa.cap, Validators.required],
           localitaSedeOper: [this.cliente.indirizzoSedeOperativa.localita, Validators.required],
           comuneNomeSedeOper: [this.cliente.indirizzoSedeOperativa.comune.id, Validators.required],
-          viaSedeLegale: ['', Validators.required],
-          civicoSedeLegale: ['', Validators.required],
-          capSedeLegale: ['', Validators.required],
-          localitaSedeLegale: ['', Validators.required],
-          comuneNomeSedeLegale: ['', Validators.required],
+          viaSedeLegale: ["", Validators.required],
+          civicoSedeLegale: ["", Validators.required],
+          capSedeLegale: ["", Validators.required],
+          localitaSedeLegale: ["", Validators.required],
+          comuneNomeSedeLegale: ["", Validators.required],
           dataIns: [this.cliente.dataInserimento, Validators.required],
-          dataUlt: [this.cliente.dataUltimoContatto, Validators.required]
-        })
+          dataUlt: [this.cliente.dataUltimoContatto, Validators.required],
+        });
       } else if (res.indirizzoSedeLegale && !res.indirizzoSedeOperativa) {
         this.validateForm = this.fb.group({
           id: [this.cliente.id, Validators.required],
@@ -323,8 +349,8 @@ export class ModificaClienteComponent implements OnInit {
           localitaSedeLegale: [this.cliente.indirizzoSedeLegale.localita, Validators.required],
           comuneNomeSedeLegale: [this.cliente.indirizzoSedeLegale.comune.id, Validators.required],
           dataIns: [this.cliente.dataInserimento, Validators.required],
-          dataUlt: [this.cliente.dataUltimoContatto, Validators.required]
-        })
+          dataUlt: [this.cliente.dataUltimoContatto, Validators.required],
+        });
       } else {
         this.validateForm = this.fb.group({
           id: [this.cliente.id, Validators.required],
@@ -338,22 +364,21 @@ export class ModificaClienteComponent implements OnInit {
           cognomeContatto: [this.cliente.cognomeContatto, Validators.required],
           numeroTelContatto: [this.cliente.telefonoContatto, Validators.required],
           emailContatto: [this.cliente.emailContatto, Validators.required],
-          viaSedeOper: ['', Validators.required],
-          civicoSedeOper: ['', Validators.required],
-          capSedeOper: ['', Validators.required],
-          localitaSedeOper: ['', Validators.required],
-          comuneNomeSedeOper: ['', Validators.required],
-          viaSedeLegale: ['', Validators.required],
-          civicoSedeLegale: ['', Validators.required],
-          capSedeLegale: ['', Validators.required],
-          localitaSedeLegale: ['', Validators.required],
-          comuneNomeSedeLegale: ['', Validators.required],
+          viaSedeOper: ["", Validators.required],
+          civicoSedeOper: ["", Validators.required],
+          capSedeOper: ["", Validators.required],
+          localitaSedeOper: ["", Validators.required],
+          comuneNomeSedeOper: ["", Validators.required],
+          viaSedeLegale: ["", Validators.required],
+          civicoSedeLegale: ["", Validators.required],
+          capSedeLegale: ["", Validators.required],
+          localitaSedeLegale: ["", Validators.required],
+          comuneNomeSedeLegale: ["", Validators.required],
           dataIns: [this.cliente.dataInserimento, Validators.required],
-          dataUlt: [this.cliente.dataUltimoContatto, Validators.required]
-        })
+          dataUlt: [this.cliente.dataUltimoContatto, Validators.required],
+        });
       }
       this.loading = false;
-    })
+    });
   }
-
 }

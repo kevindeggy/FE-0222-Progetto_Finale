@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import { Cliente } from '../models/cliente';
 import { ClientiService } from '../service/clienti.service';
 import { ComProvService } from '../service/com-prov.service';
@@ -229,7 +230,7 @@ interface NuovoCliente {
 
       <nz-form-item nz-row class="register-area">
         <nz-form-control [nzSpan]="14" [nzOffset]="6">
-          <button nz-button nzType="primary">Inserisci Nuovo CLiente</button>
+          <button [disabled]="validateForm.invalid" nz-button nzType="primary">Inserisci Nuovo CLiente</button>
         </nz-form-control>
       </nz-form-item>
 
@@ -292,7 +293,7 @@ export class NuovoClienteComponent implements OnInit {
     dataUltimoContatto: ''
   }
 
-  constructor(private fb: FormBuilder, private srvClienti: ClientiService, private srvComuni: ComProvService) { }
+  constructor(private fb: FormBuilder, private srvClienti: ClientiService, private srvComuni: ComProvService, private modal: NzModalService) { }
 
   submitForm() {
 
@@ -320,9 +321,16 @@ export class NuovoClienteComponent implements OnInit {
     this.nuovoCliente.dataUltimoContatto = this.validateForm.value.dataUlt;
 
     this.srvClienti.newCliente(this.nuovoCliente).subscribe(() => {
-      console.log('Nuovo Cliente inserito correttamente!')
+      this.successTask()
       this.validateForm.reset();
     })
+  }
+
+  successTask(): void {
+    this.modal.success({
+      nzTitle: "Comando eseguito correttamente",
+      nzContent: "Cliente creato con successo!",
+    });
   }
 
   ngOnInit(): void {

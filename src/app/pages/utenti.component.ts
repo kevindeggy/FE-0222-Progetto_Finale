@@ -26,7 +26,7 @@ export class UtentiComponent implements OnInit {
   utenti: Utente[] = []
   displayUtenti: Utente[] = []
   loading = false;
-  utentiSwitch: string = 'Utenti non Amminastrotori'
+  utentiSwitch: string = 'Utenti non Amministratori'
 
   constructor(private srvUtenti: UtentiService) { }
 
@@ -35,13 +35,13 @@ export class UtentiComponent implements OnInit {
     if (this.utenti.length !== this.displayUtenti.filter(item => item.roles[0].roleName === 'ROLE_USER').length) {
       console.log(this.utenti.length)
       setTimeout(() => {
-        this.utentiSwitch = 'Amminastrotori'
+        this.utentiSwitch = 'Amministratori'
         this.utenti = this.displayUtenti.filter(item => item.roles[0].roleName === 'ROLE_USER');
         this.loading = false;
       }, 1000);
     } else {
       setTimeout(() => {
-        this.utentiSwitch = 'Utenti non Amminastrotori'
+        this.utentiSwitch = 'Utenti non Amministratori'
         this.utenti = this.displayUtenti.filter((item) => item.roles[0].roleName === 'ROLE_ADMIN' || item.roles[1]?.roleName === 'ROLE_ADMIN');
         this.loading = false;
       }, 1000);

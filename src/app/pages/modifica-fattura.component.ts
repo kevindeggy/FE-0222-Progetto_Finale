@@ -29,7 +29,7 @@ import { FattureService } from '../service/fatture.service';
 
       <nz-form-item nz-row class="register-area">
         <nz-form-control [nzSpan]="14" [nzOffset]="6">
-          <button nz-button nzType="primary">Salva</button>
+          <button [disabled]="validateForm.invalid" nz-button nzType="primary">Salva</button>
         </nz-form-control>
       </nz-form-item>
 
